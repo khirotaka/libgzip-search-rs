@@ -1,0 +1,23 @@
+on: [push]
+
+name: CI Test
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: Test
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout
+      - uses: actions-rs/toolchain@v1
+        name: Toolchain Setup
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        name: Cargo Test
+        with:
+          command: test
+          args: --release --all-features
